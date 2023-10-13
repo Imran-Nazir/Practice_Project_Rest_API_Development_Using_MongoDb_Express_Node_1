@@ -32,10 +32,19 @@ exports.SelectTodo = (req, res)=>{
 }
 
 exports.UpdateTodo = (req, res)=>{
-    let Username = req.headers['Username'];
-    let Query = {Username: Username};
-    let reqBody = req.body;
 
-    TodoListModel.updateOne(Query, reqBody, {upsert: true}).then((data)=>{res.status(200).json({status: 'OK', data: data})})
+    let TodoSubject = req.body['TodoSubject'];
+    let TodoDescription = req.body['TodoDescription'];
+    let _id = req.body['_id'];
+    let TodoUpdateDate = Date.now();
+
+    let PostBody = {
+        TodoSubject: TodoSubject,
+        TodoDescription: TodoDescription,
+        TodoUpdateDate:TodoUpdateDate
+
+    };
+
+    TodoListModel.updateOne({_id: _id}, {$set: PostBody}, {upsert: true}).then((data)=>{res.status(200).json({status: 'OK', data: data})})
     .catch((err)=>{res.status(400).json({status: 'Error', data: err.toString()})});
 }
