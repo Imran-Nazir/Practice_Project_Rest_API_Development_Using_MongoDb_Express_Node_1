@@ -22,3 +22,20 @@ exports.CreateTodo = (req, res)=>{
             res.status(201).json({status: "Success", data: data})
         }).catch((error)=>{res.status(401).json({status: "Fail", data: error})})
 }
+
+exports.SelectTodo = (req, res)=>{
+    let Username = req.headers['Username'];
+    let Query = {Username: Username};
+
+    TodoListModel.find(Query).then((data)=>{res.status(200).json({status: 'OK', data: data})})
+    .catch((err)=>{res.status(400).json({status: 'Error', data: err})});
+}
+
+exports.UpdateTodo = (req, res)=>{
+    let Username = req.headers['Username'];
+    let Query = {Username: Username};
+    let reqBody = req.body;
+
+    TodoListModel.find(Query, {$set: reqBody}, {upsert: true}).then((data)=>{res.status(200).json({status: 'OK', data: data})})
+    .catch((err)=>{res.status(400).json({status: 'Error', data: err})});
+}
