@@ -36,6 +36,6 @@ exports.UpdateTodo = (req, res)=>{
     let Query = {Username: Username};
     let reqBody = req.body;
 
-    TodoListModel.find(Query, {$set: reqBody}, {upsert: true}).then((data)=>{res.status(200).json({status: 'OK', data: data})})
-    .catch((err)=>{res.status(400).json({status: 'Error', data: err})});
+    TodoListModel.updateOne(Query, reqBody, {upsert: true}).then((data)=>{res.status(200).json({status: 'OK', data: data})})
+    .catch((err)=>{res.status(400).json({status: 'Error', data: err.toString()})});
 }
